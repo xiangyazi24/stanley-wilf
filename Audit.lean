@@ -14,3 +14,14 @@ The checked-in presence of these commands is not a claim they were executed. -/
 #print axioms StanleyWilf.pow_div_le
 #print axioms StanleyWilf.exists_growthRate
 #print axioms StanleyWilf.growthTarget_of_product
+
+#print axioms StanleyWilf.positions_split
+#print axioms StanleyWilf.contains_directSum_cases
+#print axioms StanleyWilf.contains_skewSum_cases
+#print axioms StanleyWilf.avoids_directSum
+#print axioms StanleyWilf.avoids_skewSum
+#print axioms StanleyWilf.avoidanceProduct
+#print axioms StanleyWilf.avoiderCount_supermultiplicative
+#print axioms StanleyWilf.contains_of_length_le_one
+#print axioms StanleyWilf.growthTarget_of_length_le_one
+#print axioms StanleyWilf.stanleyWilf_of_marcusTardos

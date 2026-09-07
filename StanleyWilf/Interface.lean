@@ -1,12 +1,15 @@
-import StanleyWilf.Permutation.Basic
+import StanleyWilf.Permutation.AvoidanceProduct
+import StanleyWilf.Permutation.SmallPatterns
 import StanleyWilf.Analysis.Growth
 
 /-!
 # The concrete target and its explicit inputs
 
 `MarcusTardosBound` is only a definition of a proposition. No inhabitant is
-postulated. `growthTarget_of_product` is deliberately named to show its
-remaining input: a constructor on the actual avoidance class.
+postulated. `growthTarget_of_product` remains a reusable assembly lemma.
+`stanleyWilf_of_marcusTardos` supplies its actual combinatorial constructor
+and handles zero/one-element patterns: only the exponential bound remains
+an external mathematical input. These source declarations await compilation.
 -/
 
 namespace StanleyWilf
@@ -48,5 +51,31 @@ theorem growthTarget_of_product (τ : Perm k) (hk : 2 ≤ k)
       (one_le_all_of_supermultiplicative hsuper h0 h1 n)
   obtain ⟨L, hL, ht⟩ := exists_growthRate hpos hsuper hMT
   exact ⟨L, le_of_lt hL, ht⟩
+
+/-- The actual avoidance constructor discharges the former product hypothesis. -/
+theorem growthTarget_of_marcusTardos_nontrivial (τ : Perm k) (hk : 2 ≤ k)
+    (hMT : MarcusTardosBound τ) : GrowthTarget τ :=
+  growthTarget_of_product τ hk (avoidanceProduct τ) hMT
+
+/-- Degenerate patterns have root limit zero, without any exponential-bound input. -/
+theorem growthTarget_of_length_le_one (τ : Perm k) (hk : k ≤ 1) : GrowthTarget τ := by
+  refine ⟨0, le_refl _, ?_⟩
+  have hroot : growthRoot (avoiderCount τ) =ᶠ[atTop] (fun _ : ℕ => (0 : ℝ)) := by
+    filter_upwards [eventually_ge_atTop (1 : ℕ)] with n hn
+    have hn0 : 0 < n := by omega
+    have hnR : 0 < (n : ℝ) := by exact_mod_cast hn0
+    have hexp : (n : ℝ)⁻¹ ≠ 0 := ne_of_gt (inv_pos.mpr hnR)
+    rw [growthRoot, avoiderCount_eq_zero_of_length_le_one τ hk hn0, Nat.cast_zero]
+    exact Real.zero_rpow hexp
+  exact tendsto_const_nhds.congr' hroot.symm
+
+/-- The relative Stanley–Wilf theorem, for the concrete pattern-counting sequence.
+The only mathematical input is the explicitly quantified Marcus–Tardos bound.
+No graded-product, closure, positivity, or indecomposability input remains. -/
+theorem stanleyWilf_of_marcusTardos (τ : Perm k) (hMT : MarcusTardosBound τ) :
+    GrowthTarget τ := by
+  by_cases hk : 2 ≤ k
+  · exact growthTarget_of_marcusTardos_nontrivial τ hk hMT
+  · exact growthTarget_of_length_le_one τ (by omega)
 
 end StanleyWilf

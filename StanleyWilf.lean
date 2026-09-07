@@ -4,6 +4,10 @@ import StanleyWilf.Interface
 import StanleyWilf.Permutation.Basic
 import StanleyWilf.Permutation.Cuts
 import StanleyWilf.Permutation.BlockSum
+import StanleyWilf.Permutation.Positions
+import StanleyWilf.Permutation.Closure
+import StanleyWilf.Permutation.AvoidanceProduct
+import StanleyWilf.Permutation.SmallPatterns
 import StanleyWilf.Symbolic.WeightedSequence
 import StanleyWilf.Symbolic.Specification
 
