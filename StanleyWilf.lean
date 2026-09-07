@@ -1,3 +1,9 @@
+import StanleyWilf.Permutation.Basic
+import StanleyWilf.Permutation.Cuts
+import StanleyWilf.Permutation.BlockSum
+import StanleyWilf.Symbolic.WeightedSequence
+import StanleyWilf.Symbolic.Specification
+
 /-!
 # Stanley–Wilf
 
