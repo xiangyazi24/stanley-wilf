@@ -25,3 +25,22 @@ The checked-in presence of these commands is not a claim they were executed. -/
 #print axioms StanleyWilf.contains_of_length_le_one
 #print axioms StanleyWilf.growthTarget_of_length_le_one
 #print axioms StanleyWilf.stanleyWilf_of_marcusTardos
+
+-- Third-pass symbolic route: all of these queries still require a real Lean run.
+#print axioms StanleyWilf.IsSumCut.to_boundary
+#print axioms StanleyWilf.SumBoundary.value_lt_iff
+#print axioms StanleyWilf.IsFirstSumBoundary.unique
+#print axioms StanleyWilf.reconstruct_prefix_suffix
+#print axioms StanleyWilf.prefixPerm_indecomposable_of_first
+#print axioms StanleyWilf.directFirstJoin_injective
+#print axioms StanleyWilf.directFirstJoin_surjective
+#print axioms StanleyWilf.directFirstEquiv
+#print axioms StanleyWilf.FirstComponentSpecification.counts_eq_seq
+#print axioms StanleyWilf.FirstComponentSpecification.counts_supermultiplicative
+#print axioms StanleyWilf.contains_complement_iff
+#print axioms StanleyWilf.complement_directSum
+#print axioms StanleyWilf.skewFirstEquiv
+#print axioms StanleyWilf.avoidanceSequenceSpecification
+#print axioms StanleyWilf.avoidance_ogf_mul_one_sub
+#print axioms StanleyWilf.avoiderCount_supermultiplicative_symbolic
+#print axioms StanleyWilf.stanleyWilf_symbolic

@@ -10,6 +10,13 @@ import StanleyWilf.Permutation.AvoidanceProduct
 import StanleyWilf.Permutation.SmallPatterns
 import StanleyWilf.Symbolic.WeightedSequence
 import StanleyWilf.Symbolic.Specification
+import StanleyWilf.Permutation.Boundary
+import StanleyWilf.Permutation.Split
+import StanleyWilf.Symbolic.FirstComponent
+import StanleyWilf.Symbolic.DirectSequence
+import StanleyWilf.Permutation.Complement
+import StanleyWilf.Symbolic.AvoidanceSequence
+import StanleyWilf.Symbolic.Growth
 
 /-!
 # Stanley–Wilf

@@ -44,3 +44,34 @@ example (τ : Perm 1) : GrowthTarget τ :=
 
 example (τ : Perm 0) : GrowthTarget τ :=
   growthTarget_of_length_le_one τ (by decide)
+
+-- Concrete first components, including the full-length boundary.
+example {n : ℕ} (σ : Perm n) (hn : 0 < n) :
+    IsFirstSumBoundary σ (firstSumBoundary σ hn) := firstSumBoundary_spec σ hn
+
+example {n c : ℕ} (σ : Perm n) (h : SumBoundary σ c) :
+    castPerm (show c + (n-c) = n by have := h.1; omega)
+      (directSum (prefixPerm σ h) (suffixPerm σ h)) = σ :=
+  reconstruct_prefix_suffix σ h
+
+example {n c : ℕ} (σ : Perm n) (h : IsFirstSumBoundary σ c) :
+    SumIndecomposable (prefixPerm σ h.2.1) := prefixPerm_indecomposable_of_first σ h
+
+example : (complement (Equiv.refl (Fin 3)) (0 : Fin 3)).val = 2 := by decide
+
+example {k : ℕ} (τ : Perm k) (hk : 0 < k) :
+    SequenceSpecification (avoidanceClass τ) (indecomposableAtomClass τ) :=
+  avoidanceSequenceSpecification τ hk
+
+example {k : ℕ} (τ : Perm k) (hk : 0 < k) :
+    (avoidanceClass τ).ogf * (1 - (indecomposableAtomClass τ).ogf) = 1 :=
+  avoidance_ogf_mul_one_sub τ hk
+
+-- The singleton pattern's class is epsilon, not a positive-size logarithm case.
+example (τ : Perm 1) :
+    SequenceSpecification (avoidanceClass τ) (indecomposableAtomClass τ) :=
+  avoidanceSequenceSpecification τ (by decide)
+
+-- This endpoint uses the symbolic recurrence, not the earlier binary-product proof.
+example {k : ℕ} (τ : Perm k) (hMT : MarcusTardosBound τ) : GrowthTarget τ :=
+  stanleyWilf_symbolic τ hMT
