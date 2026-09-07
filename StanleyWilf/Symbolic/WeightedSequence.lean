@@ -41,7 +41,7 @@ theorem append_eq_of_equal_weight (size : α → ℕ) (hpos : ∀ x, 0 < size x)
       have hb := hpos b
       simp only [weight_nil, weight_cons] at hw
       omega
-  | cons a as ih =>
+  | cons a rest ih =>
     cases xs' with
     | nil =>
       have ha := hpos a
@@ -51,7 +51,7 @@ theorem append_eq_of_equal_weight (size : α → ℕ) (hpos : ∀ x, 0 < size x)
       simp only [List.cons_append, List.cons.injEq] at happend
       obtain ⟨hab, htail⟩ := happend
       subst b
-      have hw' : weight size as = weight size bs := by
+      have hw' : weight size rest = weight size bs := by
         simp only [weight_cons] at hw
         omega
       obtain ⟨hxs, hys⟩ := ih bs hw' htail

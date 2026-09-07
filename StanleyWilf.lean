@@ -1,3 +1,6 @@
+import StanleyWilf.Counting
+import StanleyWilf.Analysis.Growth
+import StanleyWilf.Interface
 import StanleyWilf.Permutation.Basic
 import StanleyWilf.Permutation.Cuts
 import StanleyWilf.Permutation.BlockSum
