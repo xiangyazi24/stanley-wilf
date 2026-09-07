@@ -1,0 +1,12 @@
+{
+  "max_block_sum_size": 6,
+  "position_selections_with_boundaries": 10240,
+  "block_constructor_pairs": 4424,
+  "individual_occurrences_checked": 254258,
+  "crossing_occurrences_with_explicit_cut": 29762,
+  "missing_indecomposability_counterexamples_checked": 2,
+  "empty_blocks_and_empty_patterns_included": true,
+  "all_python_assertions_passed": true,
+  "lean_compilation_performed": false,
+  "note": "Independent executable models, not proof of Lean elaboration or kernel checking."
+}

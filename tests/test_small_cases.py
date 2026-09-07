@@ -103,6 +103,7 @@ def run(max_n: int) -> dict[str, object]:
 
     count_inequalities = 0
     counts: dict[str, list[int]] = {}
+    sequence_coefficient_checks = 0
     for pattern in patterns:
         a = [sum(avoids(pattern, perm) for perm in perms[n]) for n in range(max_n + 1)]
         assert a[0] == 1 and all(value > 0 for value in a)
@@ -113,6 +114,14 @@ def run(max_n: int) -> dict[str, object]:
         for n in range(max_n + 1):
             for m in range(1, max_n + 1):
                 assert a[m] ** (n // m) <= a[n]
+        # The genuine SEQ first-component recurrence, in the chosen orientation.
+        cuts_fn = sum_cuts if not sum_cuts(pattern) else skew_cuts
+        indecomp = [0] + [sum(avoids(pattern, p) and not cuts_fn(p) for p in perms[n])
+                          for n in range(1, max_n + 1)]
+        for n in range(max_n + 1):
+            convolution = sum(indecomp[j] * a[n-j] for j in range(n + 1))
+            assert a[n] - convolution == (1 if n == 0 else 0)
+            sequence_coefficient_checks += 1
         counts[''.join(str(i+1) for i in pattern)] = a
     # Exact degenerate case, not passed through a log-positive theorem.
     singleton_counts = [sum(avoids((0,), p) for p in perms[n]) for n in range(max_n + 1)]
@@ -141,6 +150,7 @@ def run(max_n: int) -> dict[str, object]:
         'avoidance_closure_checks': closure_checks,
         'count_supermultiplicativity_checks': count_inequalities,
         'positive_weight_sequence_pairs_checked': weighted_pairs,
+        'sequence_ogf_coefficients_checked': sequence_coefficient_checks,
         'singleton_pattern_counts': singleton_counts,
         'counts': counts,
         'all_python_assertions_passed': True,

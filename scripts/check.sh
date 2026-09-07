@@ -4,6 +4,7 @@ cd "$(dirname "$0")/.."
 python3 scripts/check_sources.py
 python3 -m unittest discover -s tests -p test_harness.py
 python3 tests/test_small_cases.py --max-n 7
+python3 tests/test_occurrence_split.py --max-n 6
 if ! command -v lake >/dev/null 2>&1; then
   echo 'ERROR: lake is unavailable; Lean compilation and kernel audit NOT performed.' >&2
   exit 127

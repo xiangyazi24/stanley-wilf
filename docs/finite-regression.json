@@ -7,6 +7,7 @@
   "avoidance_closure_checks": 244762,
   "count_supermultiplicativity_checks": 1152,
   "positive_weight_sequence_pairs_checked": 963,
+  "sequence_ogf_coefficients_checked": 256,
   "singleton_pattern_counts": [
     1,
     0,

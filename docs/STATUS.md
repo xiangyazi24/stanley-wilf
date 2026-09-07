@@ -29,16 +29,28 @@ added. No top-level claim of a completed Stanley–Wilf formalization is made.
 - `Symbolic/Specification.lean`: an explicit size-wise `C ≃ SEQ(I)` interface,
   transported to the existing library's formal identity `C(z)(1-I(z))=1`.
 
-### Concrete combinatorial obligations still open
+### Second-pass combinatorial source (compilation still pending)
 
-1. Establish the numeric ordering lemmas for the two block constructors.
-2. Split a pattern occurrence at the boundary between blocks.
-3. Prove direct/skew closure of avoiders under the respective indecomposability
-   hypothesis, using that split.
-4. Restrict the actual block constructors to avoidance subtypes.
-5. Construct unique indecomposable factorization and its inverse, including
+- `Permutation/BlockSum.lean`: numeric formulas, relative order within blocks,
+  and strict separation across blocks, for both actual operations.
+- `Permutation/Positions.lean`: restriction to the first/second position block;
+  `positions_split` uses the first selected position in the right block to
+  prove an exact preimage-cut equivalence, including empty-domain cases.
+- `Permutation/Closure.lean`: occurrence trichotomies and concrete direct/skew
+  avoidance closure. Cross-block occurrences produce an actual forbidden-pattern cut.
+- `Permutation/AvoidanceProduct.lean`: actual constructors on avoidance
+  subtypes; one is selected from the proved indecomposability dichotomy.
+  `avoiderCount_supermultiplicative` has **no constructor hypothesis**.
+- `Permutation/SmallPatterns.lean`: actual empty/singleton occurrences and
+  zero avoider counts at positive indices for pattern length at most one.
+
+### Concrete symbolic obligations still open
+
+1. Construct unique indecomposable factorization and its inverse, including
    the empty sequence and exclusion of zero-size components.
-6. Construct the concrete `SequenceSpecification` (not just its interface).
+2. Construct the concrete `SequenceSpecification` (not just its interface).
+   The current root-limit source uses the binary constructor directly; it must
+   not be described as an implemented concrete `Av(τ) ≃ SEQ(I)` equivalence.
 
 ### Analytic source written (compilation still pending)
 
@@ -51,20 +63,38 @@ added. No top-level claim of a completed Stanley–Wilf formalization is made.
   supermultiplicativity, and a finite exponential upper bound.
 - `Interface.lean`: `MarcusTardosBound` as an unasserted proposition, the
   concrete `GrowthTarget`, small-size avoider positivity, and
-  `growthTarget_of_product` with both substantive inputs explicit.
+  `growthTarget_of_product` with both substantive inputs explicit. The new
+  `stanleyWilf_of_marcusTardos` supplies the product and handles lengths 0/1;
+  its **only mathematical hypothesis** is `MarcusTardosBound τ`.
 - `Audit.lean`: kernel-axiom queries, to be executed only after a successful
   build. No printed axiom results are claimed at this point.
 
 ### Remaining analytic/final obligations
 
-7. Compile and repair all initial source before calling any declaration verified.
-8. Connect the actual avoidance constructor to `growthTarget_of_product`.
-9. Prove the one-element-pattern case (the positive-count log theorem does not
-   apply to it), and state the final theorem for nonempty patterns.
-10. Supply a formal Marcus–Tardos proof or keep its bound explicitly quantified
-    in the final relative theorem. A new custom axiom is not an acceptable substitute.
-11. Optionally add the supremum characterization and Cauchy–Hadamard radius
-    identification. No simple-pole/asymptotic-equivalent claim is made.
+3. Compile and repair all source before calling any declaration verified.
+4. Supply a formal Marcus–Tardos proof or keep its bound explicitly quantified
+   in the final relative theorem. A new custom axiom is not an acceptable substitute.
+5. Optionally add the supremum characterization and Cauchy–Hadamard radius
+   identification. No simple-pole/asymptotic-equivalent claim is made.
+
+## Checks actually executed on the second pass
+
+- Source hygiene: PASS (90 named declarations across 15 Lean files).
+- Verification-harness Python unit tests: PASS (11 cases).
+- Shell and Python syntax checks: PASS.
+- Previous exact finite regression: PASS, with 256 additional coefficient checks
+  of `C(z)(1-I(z)) = 1` for the actual selected indecomposable-avoider classes.
+- New occurrence regression: PASS; see `occurrence-regression.json`.
+  - 10,240 increasing position selections with boundaries, including beyond-end boundaries.
+  - 4,424 direct/skew constructor pairs with total size at most 6.
+  - 254,258 individual occurrences, including empty occurrences and empty blocks.
+  - 29,762 crossing occurrences with an explicitly checked nontrivial cut.
+  - Two counterexamples confirm closure is false without the relevant indecomposability.
+- Lean/Lake is still unavailable. Both direct download and DNS resolution for
+  the public toolchain download failed. No compiler or kernel audit was run.
+- The GitHub connector returned 404 for `xiangyazi24/stanley-wilf`; its discovered
+  action set exposes reads, not repository creation or pushing. No authenticated
+  GitHub CLI is available in the authoring container.
 
 ## Checks actually executed on the initial source
 

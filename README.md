@@ -13,7 +13,17 @@ sum/skew indecomposability
   -> a finite limit of c(n)^(1/n).
 ```
 
-**Status: initial formalization, not a completed Lean proof.** Source is written
+**Status: the concrete relative growth-limit proof is written, but not compiled.**
+The endpoint is `stanleyWilf_of_marcusTardos`: its only mathematical input is
+`MarcusTardosBound τ`. The concrete product, closure, indecomposability choice,
+and degenerate-pattern cases are supplied internally. This is a statement
+about the source, **not a claim of a completed kernel-checked proof**.
+
+The full concrete symbolic equivalence `Av(τ) ≃ SEQ(I)` remains to be implemented.
+The current growth route uses the binary block constructor; the separate
+`SequenceSpecification` interface does not yet constitute that equivalence.
+
+Source is written
 without proof placeholders or project axioms. The authoring environment had no
 Lean executable and could not download a toolchain; no Lean compilation or
 kernel axiom audit has been performed. Successful source checks and finite
@@ -65,6 +75,12 @@ See [the paper proof](docs/PAPER.md),
 
 This delivery contains **local Git commits only**. No GitHub repository was
 created or pushed by the available tools. After authenticating GitHub CLI,
-`./scripts/publish.sh` creates `xiangyazi24/stanley-wilf` as a private repository
-and pushes `main`, refusing to overwrite an existing repository. It runs the
-Lean checks before creating the remote. No conversation transcript is included.
+`./scripts/publish.sh` uses an existing `xiangyazi24/stanley-wilf` repository,
+or creates it privately if absent, and pushes `main` without force. It preserves
+a local bundle origin as `bundle-source` and refuses unrelated origins. It runs
+the Lean checks before remote creation or push. No conversation transcript is included.
+
+To restore this delivery: `git clone -b main stanley-wilf-next.bundle stanley-wilf`.
+After installing the pinned toolchain and authenticating GitHub CLI, run
+`./scripts/publish.sh` from the restored repository. A non-fast-forward remote
+is intentionally not overwritten.
