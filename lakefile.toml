@@ -1,0 +1,19 @@
+name = "stanley-wilf"
+version = "0.1.0"
+defaultTargets = ["StanleyWilf"]
+
+[leanOptions]
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "8a178386ffc0f5fef0b77738bb5449d50efeea95"
+
+[[require]]
+name = "AnalyticCombinatorics"
+git = "https://github.com/xiangyazi24/AnalyticCombinatorics.git"
+rev = "3a426641ccfd0add82a82e169083ff97c8d03027"
+
+[[lean_lib]]
+name = "StanleyWilf"
