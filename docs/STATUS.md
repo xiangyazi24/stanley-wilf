@@ -44,13 +44,40 @@ added. No top-level claim of a completed Stanley–Wilf formalization is made.
 - `Permutation/SmallPatterns.lean`: actual empty/singleton occurrences and
   zero avoider counts at positive indices for pattern length at most one.
 
-### Concrete symbolic obligations still open
+### Third-pass symbolic source (compilation still pending)
 
-1. Construct unique indecomposable factorization and its inverse, including
-   the empty sequence and exclusion of zero-size components.
-2. Construct the concrete `SequenceSpecification` (not just its interface).
-   The current root-limit source uses the binary constructor directly; it must
-   not be described as an implemented concrete `Av(τ) ≃ SEQ(I)` equivalence.
+- `Permutation/Boundary.lean`: invariant prefixes, their equivalence to genuine
+  sum cuts, the first positive boundary, and uniqueness of that boundary.
+  The cut-to-invariant-prefix direction includes an actual finite pigeonhole proof.
+- `Permutation/Split.lean`: actual prefix/suffix permutations, their pattern
+  occurrences in the original permutation, exact reconstruction, and
+  indecomposability of the first prefix.
+- `Permutation/Complement.lean`: value complement as an actual permutation,
+  complement invariance of containment/avoidance, interchange of direct/skew
+  cuts, and the actual direct-to-skew constructor identity.
+- `Symbolic/DirectSequence.lean`: injectivity and surjectivity of the concrete
+  variable-cut first-component constructor on avoiders. The constructor does
+  NOT merely have a fixed-size injectivity theorem.
+- `Symbolic/FirstComponent.lean`: a first-component bijection yields an exact
+  convolution, equality with the library's SEQ coefficients, and a separate
+  proof of supermultiplicativity by truncating that nonnegative convolution.
+- `Symbolic/AvoidanceSequence.lean`: transport to actual skew-indecomposable
+  avoiders, choose the correct orientation once per pattern, and construct
+  `avoidanceSequenceSpecification` with no decomposition input. Its formal
+  identity is `avoidance_ogf_mul_one_sub`.
+- `Symbolic/Growth.lean`: `stanleyWilf_symbolic` routes through the symbolic
+  convolution lemma, not `avoidanceProduct`. The only mathematical input
+  remains `MarcusTardosBound τ`; lengths 0 and 1 are handled before logarithms.
+
+### Exact boundary of the new SEQ equivalence
+
+The object-level first-component bijection is implemented in source. The
+final size-wise `SequenceSpecification.decompose` uses
+`Fintype.equivOfCardEq` after the coefficient equality is proved by strong
+induction. No canonical full-list evaluation or round-trip theorem for that
+chosen cardinality equivalence is claimed. Building a deterministic full
+factor-list equivalence is an optional strengthening, not an extra hypothesis
+of the source-level OGF or growth theorems.
 
 ### Analytic source written (compilation still pending)
 
@@ -77,6 +104,36 @@ added. No top-level claim of a completed Stanley–Wilf formalization is made.
 5. Optionally add the supremum characterization and Cauchy–Hadamard radius
    identification. No simple-pole/asymptotic-equivalent claim is made.
 
+## Checks actually executed on the third pass
+
+- Source hygiene: PASS (183 named declarations across 22 Lean files).
+- New exact models: PASS; see `symbolic-regression.json`.
+  - All 46,234 permutations of sizes 0 through 8.
+  - 409,113 boundary equivalences and 110,116 actual block reconstructions.
+  - 92,466 unique positive first-factor checks, and 92,466 variable-cut
+    constructor pairs with both inverse directions checked.
+  - 195,162 complement/avoidance equivalences.
+  - 33 forbidden patterns, 36 admissible orientations, avoiding sizes through 7.
+  - 92,136 avoiding first factors and the same number of avoiding constructor pairs.
+  - 288 coefficient recurrences and 1,296 convolution-based count inequalities.
+  - 729 arbitrary nonnegative atom sequences, including sparse/periodic examples,
+    with 66,339 additional truncated-convolution inequalities.
+- Negative tests cover the empty forbidden pattern, empty first components,
+  unrestricted concatenation, decomposable forbidden patterns, and the
+  alternating zero coefficients of SEQ(Z^2). The last example explains why
+  the analytic limit theorem still needs positivity of the avoiding counts.
+- All results above concern independent executable finite models, not Lean.
+- The authoring container still has no Lean/Lake, and the toolchain download
+  failed. No Lean or transitive axiom audit result is claimed.
+- The complete `scripts/check.sh` was actually run: source checks, 11 harness
+  tests, and all three exact-model suites passed. The script then exited 127
+  because `lake` is unavailable. There is no Lean build or axiom result.
+- All 20 local library modules are reachable from the root import, without an
+  import cycle. 38 transitive axiom queries are prepared, NOT executed.
+- Both GitHub `get_repo` and an actual `create_file` publication attempt returned
+  404 for the exact target repository. Current connector actions support
+  repository writes but not repository creation. No remote mutation succeeded.
+
 ## Checks actually executed on the second pass
 
 - Source hygiene: PASS (90 named declarations across 15 Lean files).
@@ -92,8 +149,9 @@ added. No top-level claim of a completed Stanley–Wilf formalization is made.
   - Two counterexamples confirm closure is false without the relevant indecomposability.
 - Lean/Lake is still unavailable. Both direct download and DNS resolution for
   the public toolchain download failed. No compiler or kernel audit was run.
-- The GitHub connector returned 404 for `xiangyazi24/stanley-wilf`; its discovered
-  action set exposes reads, not repository creation or pushing. No authenticated
+- The GitHub connector returned 404 for `xiangyazi24/stanley-wilf`; the earlier discovered
+  action set exposed reads, not repository creation or pushing. In the third
+  pass write actions are available, but repository creation is still absent. No authenticated
   GitHub CLI is available in the authoring container.
 
 ## Checks actually executed on the initial source

@@ -32,3 +32,15 @@ client code compiles.
 
 The proof architecture here is an exposition of established mathematics, not a
 claim of priority or a new independent proof of Marcus–Tardos.
+
+## Additional pinned APIs inspected for the symbolic pass
+
+- `Mathlib/Data/Fintype/Card.lean`, tag `v4.29.0`:
+  `Finite.surjective_of_injective` for endomorphisms of finite types.
+- `Mathlib/Data/Fintype/EquivFin.lean`, tag `v4.29.0`:
+  `Fintype.equivOfCardEq` is explicitly noncomputable. It is used only after
+  proving the SEQ coefficient equality; it does not provide canonical factors.
+- The previously inspected `SequenceInverse.lean` supplies
+  `counts_seq_zero` and `counts_seq_succ` for the strong-induction comparison.
+
+These API reads are not a compilation certificate for the new clients.

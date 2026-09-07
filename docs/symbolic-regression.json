@@ -1,0 +1,23 @@
+{
+  "max_permutation_size": 8,
+  "avoider_max_size": 7,
+  "forbidden_patterns": 33,
+  "admissible_orientations": 36,
+  "boundary_equivalences": 409113,
+  "actual_block_reconstructions": 110116,
+  "unique_positive_first_factors": 92466,
+  "complement_cut_checks": 46234,
+  "complement_constructor_checks": 110116,
+  "complement_avoidance_equivalences": 195162,
+  "variable_cut_bijection_pairs": 92466,
+  "avoiding_first_factors": 92136,
+  "avoiding_constructor_pairs": 92136,
+  "coefficient_recurrences": 288,
+  "convolution_supermultiplicativity": 1296,
+  "abstract_convolution_sequences": 729,
+  "abstract_convolution_checks": 66339,
+  "negative_side_condition_tests": 5,
+  "all_python_assertions_passed": true,
+  "lean_compilation_performed": false,
+  "note": "Independent exact finite models; not a Lean parser/elaborator/kernel certificate."
+}

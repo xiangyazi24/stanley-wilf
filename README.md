@@ -4,36 +4,39 @@ A Lean 4 formalization project for the Stanley–Wilf growth-limit theorem,
 organized around the symbolic method:
 
 ```text
-sum/skew indecomposability
-  -> closure of the avoidance class under one block operation
-  -> unique component decomposition: C = SEQ(I)
-  -> fixed-size concatenation is injective
-  -> c(m+n) >= c(m)c(n)
-  -> Fekete + the Marcus–Tardos exponential bound
+actual invariant prefix and unique positive first boundary
+  -> actual first-component bijection: C = epsilon + I * C
+  -> nonnegative convolution, and C_n = (SEQ I)_n
+  -> supermultiplicativity proved from that convolution
+  -> Fekete + the explicit Marcus–Tardos exponential bound
   -> a finite limit of c(n)^(1/n).
 ```
 
-**Status: the concrete relative growth-limit proof is written, but not compiled.**
-The endpoint is `stanleyWilf_of_marcusTardos`: its only mathematical input is
-`MarcusTardosBound τ`. The concrete product, closure, indecomposability choice,
-and degenerate-pattern cases are supplied internally. This is a statement
-about the source, **not a claim of a completed kernel-checked proof**.
+**Status: two concrete relative growth-limit routes are written, neither has
+been compiled in this authoring environment.** The new endpoint is
+`stanleyWilf_symbolic`. Its only mathematical hypothesis is
+`MarcusTardosBound τ`; it gets supermultiplicativity from the actual symbolic
+first-component recurrence, not from the earlier binary `GradedProduct` proof.
+The earlier `stanleyWilf_of_marcusTardos` remains as an independent assembly route.
 
-The full concrete symbolic equivalence `Av(τ) ≃ SEQ(I)` remains to be implemented.
-The current growth route uses the binary block constructor; the separate
-`SequenceSpecification` interface does not yet constitute that equivalence.
+For every nonempty forbidden pattern, the new source also constructs
+`avoidanceSequenceSpecification` and proves
+`avoidance_ogf_mul_one_sub` for the actual selected sum/skew-indecomposable
+avoiding class. The first-component equivalences are genuine object-level
+constructions. The final size-wise `SequenceSpecification.decompose` uses
+finite-cardinality transport from the proved recurrence: it is **not claimed
+to compute the full canonical list of components**.
 
-Source is written
-without proof placeholders or project axioms. The authoring environment had no
-Lean executable and could not download a toolchain; no Lean compilation or
-kernel axiom audit has been performed. Successful source checks and finite
-Python tests are not a substitute for Lean verification. See
-[the precise status](docs/STATUS.md).
+No decomposition, closure, or constructor hypothesis is left at these new
+symbolic endpoints. This describes the proof **source**, not a completed
+kernel-checked formalization. There is no Lean executable in the container;
+network/toolchain retrieval failed. Source hygiene and independent exact Python
+tests are not a substitute for elaboration, compilation, or a kernel audit.
+See [the precise status](docs/STATUS.md) and [the symbolic proof](docs/SYMBOLIC_ROUTE.md).
 
 The mathematical paper proof is complete **using the already-proved
 Marcus–Tardos theorem**. This is not a new proof of that theorem. In Lean its
-exponential bound is an explicit input, not an asserted axiom or a disguised
-unproved theorem.
+exponential bound remains an explicit input, not an asserted axiom.
 
 ## Dependencies
 
@@ -73,14 +76,15 @@ See [the paper proof](docs/PAPER.md),
 
 ## Publication
 
-This delivery contains **local Git commits only**. No GitHub repository was
-created or pushed by the available tools. After authenticating GitHub CLI,
+This delivery contains **local Git commits only**. Both the repository lookup and a
+connector file-write attempt returned 404; no GitHub repository was created
+or pushed by the available tools. After authenticating GitHub CLI,
 `./scripts/publish.sh` uses an existing `xiangyazi24/stanley-wilf` repository,
 or creates it privately if absent, and pushes `main` without force. It preserves
 a local bundle origin as `bundle-source` and refuses unrelated origins. It runs
 the Lean checks before remote creation or push. No conversation transcript is included.
 
-To restore this delivery: `git clone -b main stanley-wilf-next.bundle stanley-wilf`.
+To restore this delivery: `git clone -b main stanley-wilf-symbolic.bundle stanley-wilf`.
 After installing the pinned toolchain and authenticating GitHub CLI, run
 `./scripts/publish.sh` from the restored repository. A non-fast-forward remote
 is intentionally not overwritten.

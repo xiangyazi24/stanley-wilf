@@ -46,14 +46,16 @@ of convergence of C. **The identity C = 1/(1-I) alone does not establish a
 positive radius**; that is where the Marcus–Tardos bound is used. It also does
 not imply that the dominant singularity must be a simple pole or that I(rho)=1.
 
-## What Lean must still establish
+## Source correspondence and remaining verification
 
-The formal proof must connect the concrete avoidance class to the abstract
-constructor and sequence interfaces. Supplying an arbitrary `SequenceSpecification`
-or `GradedProduct` as a hypothesis is not a proof that avoiders satisfy it.
-Likewise the input exponential bound remains an input until a formal
-Marcus–Tardos proof is imported or implemented.
+The third-pass source contains actual first-component bijections for the
+chosen sum/skew operation and derives the full coefficient recurrence. The
+new growth endpoint `stanleyWilf_symbolic` proves supermultiplicativity from
+that recurrence, rather than importing it from the binary constructor.
+See `SYMBOLIC_ROUTE.md` for that algebraic step.
 
-The project initially proves the reusable interfaces and the analytic engine;
-the concrete closure, unique factorization, and final assembly are separate
-milestones, explicitly listed in STATUS.md.
+The final size-wise SEQ equivalence is obtained by finite-cardinality transport;
+a deterministic whole-factor-list map is not claimed. None of the newly
+written source has been compiled in this authoring environment. The formal
+exponential bound also remains a quantified input until a Marcus–Tardos proof
+is imported or implemented. See `STATUS.md` for the verification ledger.
