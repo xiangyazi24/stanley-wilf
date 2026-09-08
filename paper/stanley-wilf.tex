@@ -1,17 +1,19 @@
-\documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
+\documentclass[10pt]{article}
+\usepackage[margin=0.82in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[hidelinks]{hyperref}
 \usepackage{microtype}
 \usepackage[T1]{fontenc}
+\usepackage{titling}
+\setlength{\droptitle}{-2em}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
-\newcommand{\Av}{\operatorname{Av}}
+\newcommand{\Av}{\mathrm{Av}}
 \newcommand{\SEQ}{\operatorname{SEQ}}
 
 \title{The Stanley--Wilf Limit\\
-  \large A short proof and a Lean 4 formalization}
+  \large A symbolic-method presentation and Lean 4 formalization}
 \author{Xiang Huang}
 \date{September 2026}
 
@@ -19,24 +21,27 @@
 \maketitle
 
 \begin{abstract}
-For every fixed permutation pattern $\tau$, we prove that
-$|\Av_n(\tau)|^{1/n}$ has a finite limit.  The structural step is the
-symbolic specification of the avoidance class as a sequence of
-indecomposable permutations, which gives supermultiplicativity.  Fekete's
-lemma then gives existence of the limit, while the Marcus--Tardos theorem
-gives finiteness.  We also describe a kernel-checked Lean 4 formalization in
-which the Marcus--Tardos extremal estimate and the intervening matrix-counting
-argument are themselves formalized.
+For every fixed permutation pattern $\tau$, the sequence
+$|\Av_n(\tau)|^{1/n}$ has a finite limit.  We present Arratia's
+supermultiplicativity argument~\cite{Arratia} through the symbolic
+specification of an avoidance class as a sequence of indecomposable
+permutations; finiteness then follows from Marcus and
+Tardos~\cite{MarcusTardos}.  We also describe a kernel-checked Lean~4
+formalization of the full chain.  Its extremal-matrix layer is an attributed
+Lean~4.29 adaptation of the Apache-2.0 \texttt{ForbiddenMatrix} development by
+Dillies and contributors~\cite{ForbiddenMatrix}; this repository supplies Lean
+code for the permutation bridge, matrix-counting and dyadic arguments,
+symbolic route, and unconditional endpoint.  This is a formalization and proof
+presentation, not a claim of mathematical priority.
 \end{abstract}
 
-Let $\sigma\oplus\pi$ denote the direct sum of two permutations and
-$\sigma\ominus\pi$ their skew sum.  A nonempty permutation is
+Following Arratia~\cite{Arratia}, let $\sigma\oplus\pi$ denote the direct sum
+of two permutations and $\sigma\ominus\pi$ their skew sum.  A nonempty permutation is
 \emph{sum-indecomposable} (respectively \emph{skew-indecomposable}) if it has
 no nontrivial decomposition using $\oplus$ (respectively $\ominus$).
 
 \begin{lemma}\label{lem:dichotomy}
-A permutation of length at least two is sum-indecomposable or
-skew-indecomposable.
+Every nonempty permutation is sum-indecomposable or skew-indecomposable.
 \end{lemma}
 
 \begin{proof}
@@ -77,17 +82,24 @@ $|\tau|\geq2$.
 By Lemma~\ref{lem:dichotomy}, choose direct sum or skew sum so that $\tau$ is
 indecomposable for that operation.  Lemma~\ref{lem:closure} shows that
 $\Av(\tau)$ is closed under the chosen operation.  Let $\mathcal I$ be its
-nonempty indecomposable members.  The unique decomposition into
-indecomposable components gives the symbolic specification
+nonempty indecomposable members.  Every component of an avoider is again an
+avoider, by hereditary pattern avoidance; conversely, closure reconstructs an
+avoider from such components.  Unique indecomposable decomposition therefore
+gives the symbolic specification
 \[
   \Av(\tau)=\SEQ(\mathcal I),
   \qquad C(z)=\frac{1}{1-I(z)}.
 \]
-In particular, concatenating the component sequences of objects of sizes
-$m$ and $n$ gives an injection
+Here $C(z)=\sum_{n\geq0}c_nz^n$ and
+$I(z)=\sum_{n\geq1}i_nz^n$ are formal ordinary generating functions.
+This is the unlabelled symbolic sequence construction~\cite{FlajoletSedgewick}.
+In particular, concatenating the component sequences of objects of fixed
+sizes $m$ and $n$ gives an injection
 \[
   \Av_m(\tau)\times\Av_n(\tau)\hookrightarrow\Av_{m+n}(\tau).
 \]
+Indeed, all components have positive size, so the cumulative size $m$
+uniquely recovers the cut.
 Thus $c_{m+n}\geq c_mc_n$.
 
 The singleton permutation avoids $\tau$, so repeated sums give $c_n\geq1$.
@@ -108,35 +120,53 @@ most $K_\tau$.
 \section*{Formalization}
 
 The Lean development formalizes both inputs rather than postulating the
-exponential bound.  For a pattern of length $k$, the formalized
-Marcus--Tardos extremal estimate uses the explicit linear constant
+exponential bound.  Its Marcus--Tardos extremal layer is adapted, with its
+Apache-2.0 license and modification notice, from Dillies and contributors'
+\texttt{ForbiddenMatrix} project~\cite{ForbiddenMatrix}.  For a pattern of
+length $k$, this layer gives the explicit F\"uredi--Hajnal linear bound
 \[
   M_k=2k^4\binom{k^2}{k}.
 \]
 The permutation-matrix embedding, a $2\times2$ block contraction, and the
-fifteen possible nonempty block masks give Klazar's recurrence.  A dyadic
-argument then proves the explicit bound
+fifteen possible nonempty block masks give Klazar's
+recurrence~\cite{Klazar}, as reproduced in
+Marcus--Tardos~\cite[Section~3]{MarcusTardos}.  The bridge, recurrence, and
+dyadic argument are assembled here and prove the explicit bound
 \[
   c_n\leq\bigl(2\cdot15^{2M_k}\bigr)^n.
 \]
 The public Lean theorem has no mathematical hypotheses:
 \begin{verbatim}
-theorem stanleyWilf (tau : Perm k) : GrowthTarget tau
+theorem stanleyWilf {k : Nat} (tau : Perm k) : GrowthTarget tau
 \end{verbatim}
 where \texttt{GrowthTarget tau} states that the real sequence
-$c_n^{1/n}$ tends to a finite nonnegative real number.
+$c_n^{1/n}$ tends to a finite nonnegative real number, and
+\texttt{Perm k} is the type of permutations of $\operatorname{Fin}(k)$.
+The displayed supremum characterization belongs to the paper proof; it is not
+an extra field of \texttt{GrowthTarget}.
 
-The full project builds with Lean~4.29.0.  A transitive
+At the object level Lean constructs the canonical first-component bijection
+$\mathcal C_{n+1}\simeq\sum_j\mathcal I_{j+1}\times\mathcal C_{n-j}$ and
+derives the convolution and supermultiplicativity from it.  The complete
+size-wise \texttt{SEQ} equivalence is then obtained from coefficient equality
+using \texttt{Fintype.equivOfCardEq}; it is not claimed to be an executable
+whole-factor-list decomposition.
+
+Commit
+\href{https://github.com/xiangyazi24/stanley-wilf/commit/cd7c4a735f8d4959aa8e9cbe4eb8c300d4b63c20}
+{\texttt{cd7c4a7}} builds with Lean~4.29.0 in a
+\href{https://github.com/xiangyazi24/stanley-wilf/actions/runs/34187990454}
+{public CI run}.  A transitive
 \texttt{\#print axioms} audit of 48 declarations reports only
 \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
 The source and verification scripts are available at
 \href{https://github.com/xiangyazi24/stanley-wilf}
 {github.com/xiangyazi24/stanley-wilf}.
 
-The extremal-matrix layer is an attributed Lean~4.29 adaptation of Ya\"el
-Dillies and contributors' Apache-2.0 \texttt{ForbiddenMatrix} development.
-The permutation bridge, counting recurrence, dyadic bound, symbolic
-decomposition, and final theorem are assembled in this repository.
+The mathematical argument is established work: Arratia supplies the
+supermultiplicative limit argument, Marcus and Tardos the extremal theorem,
+and their Section~3 records Klazar's counting reduction.  The contribution of
+this artifact is its symbolic-method organization and verified Lean assembly.
 
 \begin{thebibliography}{9}
 \bibitem{Arratia}
@@ -148,6 +178,18 @@ a given pattern}, Electron. J. Combin. 6 (1999), N1.
 A. Marcus and G. Tardos,
 \emph{Excluded permutation matrices and the Stanley--Wilf conjecture},
 J. Combin. Theory Ser. A 107 (2004), 153--160.
+
+\bibitem{Klazar}
+M. Klazar,
+\emph{The F\"uredi--Hajnal conjecture implies the Stanley--Wilf conjecture},
+in \emph{Formal Power Series and Algebraic Combinatorics}, Springer, 2000,
+250--255, doi:10.1007/978-3-662-04166-6\_22.
+
+\bibitem{ForbiddenMatrix}
+Ya\"el Dillies and contributors,
+\emph{ForbiddenMatrix}, Lean~4 formalization, Apache-2.0,
+\href{https://github.com/YaelDillies/ForbiddenMatrix/tree/a938c04974d145131c446e8d488b834797ab6ed0}
+{GitHub commit \texttt{a938c04}}.
 
 \bibitem{FlajoletSedgewick}
 P. Flajolet and R. Sedgewick,

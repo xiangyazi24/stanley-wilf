@@ -52,7 +52,7 @@ fi
 # A pre-existing target is allowed; an unrelated remote is not. If viewing
 # fails because access is denied, creation also fails safely; no force push.
 if ! gh repo view "$target" --json nameWithOwner >/dev/null 2>&1; then
-  gh repo create "$target" --private --description 'Stanley–Wilf growth-limit formalization in Lean'
+  gh repo create "$target" --public --description 'Stanley–Wilf growth-limit formalization in Lean'
 fi
 if [[ "$bundle_origin" == true ]]; then
   git remote rename origin bundle-source
