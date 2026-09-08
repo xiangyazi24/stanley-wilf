@@ -1,0 +1,157 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Av}{\operatorname{Av}}
+\newcommand{\SEQ}{\operatorname{SEQ}}
+
+\title{The Stanley--Wilf Limit\\
+  \large A short proof and a Lean 4 formalization}
+\author{Xiang Huang}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For every fixed permutation pattern $\tau$, we prove that
+$|\Av_n(\tau)|^{1/n}$ has a finite limit.  The structural step is the
+symbolic specification of the avoidance class as a sequence of
+indecomposable permutations, which gives supermultiplicativity.  Fekete's
+lemma then gives existence of the limit, while the Marcus--Tardos theorem
+gives finiteness.  We also describe a kernel-checked Lean 4 formalization in
+which the Marcus--Tardos extremal estimate and the intervening matrix-counting
+argument are themselves formalized.
+\end{abstract}
+
+Let $\sigma\oplus\pi$ denote the direct sum of two permutations and
+$\sigma\ominus\pi$ their skew sum.  A nonempty permutation is
+\emph{sum-indecomposable} (respectively \emph{skew-indecomposable}) if it has
+no nontrivial decomposition using $\oplus$ (respectively $\ominus$).
+
+\begin{lemma}\label{lem:dichotomy}
+A permutation of length at least two is sum-indecomposable or
+skew-indecomposable.
+\end{lemma}
+
+\begin{proof}
+If $\tau=\alpha\oplus\beta$ is a nontrivial direct sum, then the entry $1$
+occurs before the largest entry.  If
+$\tau=\gamma\ominus\delta$ is a nontrivial skew sum, the largest entry occurs
+before $1$.  Both decompositions therefore cannot exist.
+\end{proof}
+
+\begin{lemma}\label{lem:closure}
+If $\tau$ is sum-indecomposable, then $\Av(\tau)$ is closed under direct sum.
+If $\tau$ is skew-indecomposable, it is closed under skew sum.
+\end{lemma}
+
+\begin{proof}
+We prove the direct-sum case.  Suppose that $\sigma$ and $\pi$ avoid $\tau$.
+An occurrence of $\tau$ in $\sigma\oplus\pi$ either lies in one block, which
+contradicts avoidance by that block, or meets both blocks.  In the latter
+case every selected value from the first block is below every selected value
+from the second block.  The occurrence therefore expresses $\tau$ as a
+nontrivial direct sum, a contradiction.  The skew case is identical with the
+inequalities reversed.
+\end{proof}
+
+\begin{theorem}[Stanley--Wilf]
+For every permutation pattern $\tau$, the limit
+\[
+  \lim_{n\to\infty}|\Av_n(\tau)|^{1/n}
+\]
+exists and is finite.
+\end{theorem}
+
+\begin{proof}
+Write $c_n=|\Av_n(\tau)|$.  Patterns of length at most one are immediate: all
+positive-size avoidance classes are empty, so the limit is zero.  Assume
+$|\tau|\geq2$.
+
+By Lemma~\ref{lem:dichotomy}, choose direct sum or skew sum so that $\tau$ is
+indecomposable for that operation.  Lemma~\ref{lem:closure} shows that
+$\Av(\tau)$ is closed under the chosen operation.  Let $\mathcal I$ be its
+nonempty indecomposable members.  The unique decomposition into
+indecomposable components gives the symbolic specification
+\[
+  \Av(\tau)=\SEQ(\mathcal I),
+  \qquad C(z)=\frac{1}{1-I(z)}.
+\]
+In particular, concatenating the component sequences of objects of sizes
+$m$ and $n$ gives an injection
+\[
+  \Av_m(\tau)\times\Av_n(\tau)\hookrightarrow\Av_{m+n}(\tau).
+\]
+Thus $c_{m+n}\geq c_mc_n$.
+
+The singleton permutation avoids $\tau$, so repeated sums give $c_n\geq1$.
+Hence $\log c_n$ is superadditive.  Fekete's lemma yields
+\[
+  \lim_{n\to\infty}\frac{\log c_n}{n}
+    =\sup_{n\geq1}\frac{\log c_n}{n},
+\]
+initially allowing $+\infty$.  Exponentiating gives
+\[
+  \lim_{n\to\infty}c_n^{1/n}=\sup_{n\geq1}c_n^{1/n}.
+\]
+Finally, the Marcus--Tardos theorem supplies a constant $K_\tau<\infty$ such
+that $c_n\leq K_\tau^n$ for all $n$.  The displayed supremum is therefore at
+most $K_\tau$.
+\end{proof}
+
+\section*{Formalization}
+
+The Lean development formalizes both inputs rather than postulating the
+exponential bound.  For a pattern of length $k$, the formalized
+Marcus--Tardos extremal estimate uses the explicit linear constant
+\[
+  M_k=2k^4\binom{k^2}{k}.
+\]
+The permutation-matrix embedding, a $2\times2$ block contraction, and the
+fifteen possible nonempty block masks give Klazar's recurrence.  A dyadic
+argument then proves the explicit bound
+\[
+  c_n\leq\bigl(2\cdot15^{2M_k}\bigr)^n.
+\]
+The public Lean theorem has no mathematical hypotheses:
+\begin{verbatim}
+theorem stanleyWilf (tau : Perm k) : GrowthTarget tau
+\end{verbatim}
+where \texttt{GrowthTarget tau} states that the real sequence
+$c_n^{1/n}$ tends to a finite nonnegative real number.
+
+The full project builds with Lean~4.29.0.  A transitive
+\texttt{\#print axioms} audit of 48 declarations reports only
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
+The source and verification scripts are available at
+\href{https://github.com/xiangyazi24/stanley-wilf}
+{github.com/xiangyazi24/stanley-wilf}.
+
+The extremal-matrix layer is an attributed Lean~4.29 adaptation of Ya\"el
+Dillies and contributors' Apache-2.0 \texttt{ForbiddenMatrix} development.
+The permutation bridge, counting recurrence, dyadic bound, symbolic
+decomposition, and final theorem are assembled in this repository.
+
+\begin{thebibliography}{9}
+\bibitem{Arratia}
+R. Arratia,
+\emph{On the Stanley--Wilf conjecture for the number of permutations avoiding
+a given pattern}, Electron. J. Combin. 6 (1999), N1.
+
+\bibitem{MarcusTardos}
+A. Marcus and G. Tardos,
+\emph{Excluded permutation matrices and the Stanley--Wilf conjecture},
+J. Combin. Theory Ser. A 107 (2004), 153--160.
+
+\bibitem{FlajoletSedgewick}
+P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009.
+\end{thebibliography}
+
+\end{document}

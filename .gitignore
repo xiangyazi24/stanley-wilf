@@ -5,3 +5,9 @@
 __pycache__/
 build-logs/
 .DS_Store
+paper/*.aux
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.log
+paper/*.out
+paper/*.xdv

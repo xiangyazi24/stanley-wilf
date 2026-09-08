@@ -76,6 +76,10 @@ See [the paper proof](docs/PAPER.md),
 [the declaration/roadmap ledger](docs/STATUS.md), and
 [the dependency sources](docs/SOURCES.md).
 
+The concise two-page note is available as
+[paper/stanley-wilf.pdf](paper/stanley-wilf.pdf); its reproducible LaTeX source
+is [paper/stanley-wilf.tex](paper/stanley-wilf.tex).
+
 ## Publication
 
 The repository is published at
