@@ -72,6 +72,13 @@ noncomputable example (τ : Perm 1) :
     SequenceSpecification (avoidanceClass τ) (indecomposableAtomClass τ) :=
   avoidanceSequenceSpecification τ (by decide)
 
--- This endpoint uses the symbolic recurrence, not the earlier binary-product proof.
+-- The relative endpoint keeps the bound explicit for modular auditing.
 example {k : ℕ} (τ : Perm k) (hMT : MarcusTardosBound τ) : GrowthTarget τ :=
-  stanleyWilf_symbolic τ hMT
+  stanleyWilf_symbolic_of_marcusTardos τ hMT
+
+-- The public symbolic endpoint has no mathematical hypotheses.
+example {k : ℕ} (τ : Perm k) : GrowthTarget τ :=
+  stanleyWilf_symbolic τ
+
+example {k : ℕ} (τ : Perm k) : GrowthTarget τ :=
+  stanleyWilf τ

@@ -46,7 +46,7 @@ of convergence of C. **The identity C = 1/(1-I) alone does not establish a
 positive radius**; that is where the Marcus–Tardos bound is used. It also does
 not imply that the dominant singularity must be a simple pole or that I(rho)=1.
 
-## Source correspondence and remaining verification
+## Source correspondence and verification
 
 The third-pass source contains actual first-component bijections for the
 chosen sum/skew operation and derives the full coefficient recurrence. The
@@ -56,6 +56,7 @@ See `SYMBOLIC_ROUTE.md` for that algebraic step.
 
 The final size-wise SEQ equivalence is obtained by finite-cardinality transport;
 a deterministic whole-factor-list map is not claimed. The Lean source for this
-route now compiles and passes the project axiom audit. The formal exponential
-bound also remains a quantified input until a Marcus–Tardos proof is imported
-or implemented. See `STATUS.md` for the verification ledger.
+route compiles and passes the project axiom audit. The formalized
+Marcus–Tardos extremal estimate, Klazar counting recurrence, and dyadic argument
+produce the exponential bound used by the unconditional endpoint. See
+`STATUS.md` for the verification ledger.

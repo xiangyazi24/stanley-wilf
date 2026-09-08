@@ -3,10 +3,10 @@
 ## Machine-verification status
 
 - Lean compiler available during authoring: **yes**, Lean `v4.29.0` on uisai2.
-- New Lean files compiled: **yes**, remote `lake build` completed 8272/8272.
+- New Lean files compiled: **yes**, remote `lake build` completed 8285/8285.
 - New declarations checked by the Lean kernel: **yes**.
-- `#print axioms` executed: **yes**, 38 declarations audited.
-- GitHub remote created/pushed: **no**.
+- `#print axioms` executed: **yes**, 48 declarations audited.
+- GitHub remote created/pushed: **yes**.
 
 The absence of textual proof placeholders is not itself a build result. The
 current build and axiom-audit evidence is recorded below; the finite Python
@@ -14,9 +14,27 @@ regression tests check independent executable models in addition to Lean.
 
 ## Stages
 
-The source-level Stanley–Wilf formalization is now kernel-checked relative to
-the explicit `MarcusTardosBound` input. No proof of Marcus–Tardos itself is
-included in this repository.
+The unconditional Stanley--Wilf formalization is kernel-checked.  The
+Marcus--Tardos extremal theorem, Klazar counting reduction, and symbolic growth
+argument are all connected in the dependency cone of `stanleyWilf`.
+
+### Marcus--Tardos and Klazar source (compiled)
+
+- `ForbiddenMatrix/*`: an attributed Lean 4.29 adaptation of the Apache-2.0
+  `YaelDillies/ForbiddenMatrix` proof of the Marcus--Tardos linear extremal
+  estimate, including the original explicit constant.
+- `MarcusTardos/Matrix.lean` and `PermutationMatrix.lean`: finite-support
+  zero-one matrices and the two-way permutation-pattern containment bridge.
+- `MarcusTardos/Blocks.lean`: block contraction, occurrence lifting, and exact
+  block-weight decomposition.
+- `MarcusTardos/ExtremalBridge.lean`: equivalence with the predicate-matrix
+  representation and the finite-support linear bound.
+- `MarcusTardos/Enumeration.lean`: the exact fifteen-mask encoding, Klazar
+  cardinal recurrence, zero-padding injection, and monotonicity.
+- `MarcusTardos/Dyadic.lean`: the recurrence-to-uniform-exponential argument,
+  including index zero.
+- `MarcusTardos/Final.lean`: permutation matrices inject avoiders into avoiding
+  zero-one matrices and produce `marcusTardosBound` for every pattern length.
 
 ### Source written and compiled
 
@@ -66,9 +84,9 @@ included in this repository.
   avoiders, choose the correct orientation once per pattern, and construct
   `avoidanceSequenceSpecification` with no decomposition input. Its formal
   identity is `avoidance_ogf_mul_one_sub`.
-- `Symbolic/Growth.lean`: `stanleyWilf_symbolic` routes through the symbolic
-  convolution lemma, not `avoidanceProduct`. The only mathematical input
-  remains `MarcusTardosBound τ`; lengths 0 and 1 are handled before logarithms.
+- `Symbolic/Growth.lean`: `stanleyWilf_symbolic_of_marcusTardos` is the relative
+  route.  `stanleyWilf_symbolic` and `stanleyWilf` supply the internally proved
+  bound and have no hypotheses; lengths 0 and 1 are handled before logarithms.
 
 ### Exact boundary of the new SEQ equivalence
 
@@ -90,19 +108,25 @@ of the source-level OGF or growth theorems.
   by continuity of the exponential. Assumptions: strict positivity,
   supermultiplicativity, and a finite exponential upper bound.
 - `Interface.lean`: `MarcusTardosBound` as an unasserted proposition, the
-  concrete `GrowthTarget`, small-size avoider positivity, and
-  `growthTarget_of_product` with both substantive inputs explicit. The new
-  `stanleyWilf_of_marcusTardos` supplies the product and handles lengths 0/1;
-  its **only mathematical hypothesis** is `MarcusTardosBound τ`.
+  concrete `GrowthTarget`, small-size avoider positivity, and relative assembly
+  lemmas. `MarcusTardos.Final` supplies the bound consumed by the unconditional
+  public endpoint in `Symbolic/Growth.lean`.
 - `Audit.lean`: kernel-axiom queries, executed after the successful remote
   build; all reported axioms are in the permitted transitive set.
 
-### Remaining analytic/final obligations
+### Optional strengthening
 
-3. Supply a formal Marcus–Tardos proof or keep its bound explicitly quantified
-  in the final relative theorem. A new custom axiom is not an acceptable substitute.
-4. Optionally add the supremum characterization and Cauchy–Hadamard radius
+1. Add the supremum characterization and Cauchy–Hadamard radius
   identification. No simple-pole/asymptotic-equivalent claim is made.
+
+## Checks executed for the unconditional endpoint
+
+- Remote full build on uisai2 with Lean `v4.29.0`: **PASS**, 8285/8285.
+- `tests/Smoke.lean` and `tests/MarcusTardosSmoke.lean`: **PASS**.
+- `Audit.lean` plus `scripts/check_axioms.py`: **PASS**, 48 declarations;
+  only `propext`, `Classical.choice`, and `Quot.sound` occur.
+- Source hygiene: **PASS**, 371 named declarations across 37 Lean files.
+- Existing exact Python regression suites: **PASS**.
 
 ## Checks actually executed on the fourth pass
 

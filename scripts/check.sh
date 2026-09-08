@@ -13,5 +13,6 @@ fi
 mkdir -p build-logs
 lake build 2>&1 | tee build-logs/lake-build.log
 lake env lean tests/Smoke.lean 2>&1 | tee build-logs/smoke.log
+lake env lean tests/MarcusTardosSmoke.lean 2>&1 | tee build-logs/marcus-tardos-smoke.log
 lake env lean Audit.lean 2>&1 | tee build-logs/axioms.log
 python3 scripts/check_axioms.py build-logs/axioms.log

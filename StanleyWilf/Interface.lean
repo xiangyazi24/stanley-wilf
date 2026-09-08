@@ -3,13 +3,13 @@ import StanleyWilf.Permutation.SmallPatterns
 import StanleyWilf.Analysis.Growth
 
 /-!
-# The concrete target and its explicit inputs
+# The concrete target and relative assembly lemmas
 
 `MarcusTardosBound` is only a definition of a proposition. No inhabitant is
-postulated. `growthTarget_of_product` remains a reusable assembly lemma.
-`stanleyWilf_of_marcusTardos` supplies its actual combinatorial constructor
-and handles zero/one-element patterns: only the exponential bound remains
-an external mathematical input. These source declarations await compilation.
+postulated in this module. `growthTarget_of_product` remains a reusable
+assembly lemma, while `stanleyWilf_of_marcusTardos` supplies the actual
+combinatorial constructor and handles zero/one-element patterns. The producer
+of `MarcusTardosBound` is proved later in `MarcusTardos.Final`.
 -/
 
 namespace StanleyWilf
@@ -18,7 +18,7 @@ open Filter Topology
 
 variable {k : ℕ}
 
-/-- The established mathematical theorem's exponential-bound interface.
+/-- The exponential-bound interface used by the relative assembly lemmas.
 There is no axiom asserting that this proposition holds. -/
 def MarcusTardosBound (τ : Perm k) : Prop :=
   ExponentialBound (avoiderCount τ)
@@ -69,9 +69,9 @@ theorem growthTarget_of_length_le_one (τ : Perm k) (hk : k ≤ 1) : GrowthTarge
     exact Real.zero_rpow hexp
   exact tendsto_const_nhds.congr' hroot.symm
 
-/-- The relative Stanley–Wilf theorem, for the concrete pattern-counting sequence.
-The only mathematical input is the explicitly quantified Marcus–Tardos bound.
-No graded-product, closure, positivity, or indecomposability input remains. -/
+/-- The relative Stanley–Wilf theorem for the concrete pattern-counting sequence.
+Its only hypothesis is the explicitly quantified Marcus–Tardos bound, which is
+discharged by `MarcusTardos.marcusTardosBound` at the public endpoint. -/
 theorem stanleyWilf_of_marcusTardos (τ : Perm k) (hMT : MarcusTardosBound τ) :
     GrowthTarget τ := by
   by_cases hk : 2 ≤ k

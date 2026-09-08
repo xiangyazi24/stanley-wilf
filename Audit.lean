@@ -44,3 +44,15 @@ The checked-in presence of these commands is not a claim they were executed. -/
 #print axioms StanleyWilf.avoidance_ogf_mul_one_sub
 #print axioms StanleyWilf.avoiderCount_supermultiplicative_symbolic
 #print axioms StanleyWilf.stanleyWilf_symbolic
+#print axioms StanleyWilf.stanleyWilf_symbolic_of_marcusTardos
+#print axioms StanleyWilf.stanleyWilf
+
+-- Marcus--Tardos extremal and Klazar enumeration chain.
+#print axioms StanleyWilf.ForbiddenMatrix.ex_permPattern_le
+#print axioms StanleyWilf.MarcusTardos.contains_iff_permutationMatrix_contains
+#print axioms StanleyWilf.MarcusTardos.weight_le_marcusTardos
+#print axioms StanleyWilf.MarcusTardos.contractionCodeOfAvoider_injective
+#print axioms StanleyWilf.MarcusTardos.avoidingMatrixCount_two_mul_le
+#print axioms StanleyWilf.MarcusTardos.avoidingMatrixCount_mono
+#print axioms StanleyWilf.MarcusTardos.count_le_uniform_exponential_of_doubling
+#print axioms StanleyWilf.MarcusTardos.marcusTardosBound

@@ -17,12 +17,20 @@ import StanleyWilf.Symbolic.DirectSequence
 import StanleyWilf.Permutation.Complement
 import StanleyWilf.Symbolic.AvoidanceSequence
 import StanleyWilf.Symbolic.Growth
+import StanleyWilf.ForbiddenMatrix.PermutationPatterns
+import StanleyWilf.MarcusTardos.Matrix
+import StanleyWilf.MarcusTardos.PermutationMatrix
+import StanleyWilf.MarcusTardos.Blocks
+import StanleyWilf.MarcusTardos.ExtremalBridge
+import StanleyWilf.MarcusTardos.Enumeration
+import StanleyWilf.MarcusTardos.Dyadic
+import StanleyWilf.MarcusTardos.Final
 
 /-!
 # Stanley–Wilf
 
 Entry point for the formalization. See README.md and docs/STATUS.md for the
-precise verification boundary. The paper proof uses the established
-Marcus–Tardos theorem; this repository does not introduce a corresponding
-Lean axiom.
+precise verification boundary.  The repository includes the Marcus--Tardos
+linear extremal theorem and Klazar's counting reduction, so the public
+Stanley--Wilf endpoint is unconditional.
 -/

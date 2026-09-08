@@ -27,6 +27,10 @@ client code compiles.
   Stanley–Wilf conjecture", Journal of Combinatorial Theory, Series A 107
   (2004), 153–160.
   https://web.math.princeton.edu/~amarcus/papers/permmat/MarcusTardos_permmat.pdf
+- Yaël Dillies and contributors, `ForbiddenMatrix`, commit
+  `a938c04974d145131c446e8d488b834797ab6ed0`, Apache-2.0.  The adapted source,
+  full license, and modification notice are in `StanleyWilf/ForbiddenMatrix/`.
+  https://github.com/YaelDillies/ForbiddenMatrix/tree/a938c04974d145131c446e8d488b834797ab6ed0
 - Philippe Flajolet and Robert Sedgewick, *Analytic Combinatorics*, Chapter I:
   the unlabelled sequence construction and ordinary generating functions.
 

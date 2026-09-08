@@ -12,12 +12,13 @@ actual invariant prefix and unique positive first boundary
   -> a finite limit of c(n)^(1/n).
 ```
 
-**Status: two concrete relative growth-limit routes are written and compile
-under the pinned Lean toolchain.** The new endpoint is
-`stanleyWilf_symbolic`. Its only mathematical hypothesis is
-`MarcusTardosBound τ`; it gets supermultiplicativity from the actual symbolic
-first-component recurrence, not from the earlier binary `GradedProduct` proof.
-The earlier `stanleyWilf_of_marcusTardos` remains as an independent assembly route.
+**Status: the unconditional theorem is formalized and compiles under the
+pinned Lean toolchain.** The public endpoints are `stanleyWilf_symbolic` and
+`stanleyWilf`; neither has a mathematical hypothesis.  Supermultiplicativity
+comes from the actual symbolic first-component recurrence.  The formalized
+Marcus--Tardos linear extremal theorem and Klazar's matrix-counting reduction
+supply the exponential bound.  Relative endpoints remain available for
+modular auditing.
 
 For every nonempty forbidden pattern, the new source also constructs
 `avoidanceSequenceSpecification` and proves
@@ -33,9 +34,11 @@ symbolic endpoints. The source passes the remote Lean build and the transitive
 regression evidence, not a substitute for the kernel check.
 See [the precise status](docs/STATUS.md) and [the symbolic proof](docs/SYMBOLIC_ROUTE.md).
 
-The mathematical paper proof is complete **using the already-proved
-Marcus–Tardos theorem**. This is not a new proof of that theorem. In Lean its
-exponential bound remains an explicit input, not an asserted axiom.
+The repository contains a Lean proof of the Marcus--Tardos extremal estimate
+with its explicit constant, adapted under Apache-2.0 from the independently
+developed `YaelDillies/ForbiddenMatrix` formalization.  It also contains our
+finite-support bridge, the fifteen-mask contraction encoding, zero padding,
+the dyadic estimate, and the final permutation-matrix injection.
 
 ## Dependencies
 
@@ -75,15 +78,7 @@ See [the paper proof](docs/PAPER.md),
 
 ## Publication
 
-This delivery contains **local Git commits only**. Both the repository lookup and a
-connector file-write attempt returned 404; no GitHub repository was created
-or pushed by the available tools. After authenticating GitHub CLI,
-`./scripts/publish.sh` uses an existing `xiangyazi24/stanley-wilf` repository,
-or creates it privately if absent, and pushes `main` without force. It preserves
-a local bundle origin as `bundle-source` and refuses unrelated origins. It runs
-the Lean checks before remote creation or push. No conversation transcript is included.
-
-To restore this delivery: `git clone -b main stanley-wilf-symbolic.bundle stanley-wilf`.
-After installing the pinned toolchain and authenticating GitHub CLI, run
-`./scripts/publish.sh` from the restored repository. A non-fast-forward remote
-is intentionally not overwritten.
+The repository is published at
+`https://github.com/xiangyazi24/stanley-wilf`.  `scripts/publish.sh` performs a
+checked, non-force publication when future updates are ready.  No conversation
+transcript is included.

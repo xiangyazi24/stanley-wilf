@@ -1,4 +1,5 @@
-import StanleyWilf.MarcusTardos.PermutationMatrix
+import StanleyWilf.MarcusTardos.Final
+import StanleyWilf.Symbolic.Growth
 
 /-!
 # Smoke tests for the Marcus--Tardos layer
@@ -78,5 +79,18 @@ example : MatrixAvoids
     occ.position.strictMono (by decide)
   have hvalues := (occ.pattern (0 : Fin 2) (1 : Fin 2)).mpr hpos
   simp at hvalues
+
+/-! The extremal, enumerative, and final endpoints are usable without hidden inputs. -/
+
+example {k n : ℕ} (tau : Perm k) (A : ZeroOneMatrix n n)
+    (hA : MatrixAvoids (permutationMatrix tau) A) :
+    weight A ≤ 2 * k ^ 4 * (k ^ 2).choose k * n :=
+  weight_le_marcusTardos tau A hA
+
+example {k : ℕ} (tau : Perm k) : MarcusTardosBound tau :=
+  marcusTardosBound tau
+
+example {k : ℕ} (tau : Perm k) : GrowthTarget tau :=
+  StanleyWilf.stanleyWilf tau
 
 end StanleyWilf.MarcusTardos

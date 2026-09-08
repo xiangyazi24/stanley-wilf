@@ -1,8 +1,8 @@
 # The first-component symbolic route
 
 This is an exposition of established mathematics and a proof map. The Lean
-source for the route compiles, but this project does not claim a new proof of
-Marcus–Tardos.
+source compiles. The Marcus–Tardos extremal estimate is an attributed adaptation
+of `YaelDillies/ForbiddenMatrix`; this repository makes no priority claim for it.
 
 ## 1. Canonical first component
 
@@ -65,14 +65,15 @@ and its uniqueness are the structural content used before this transport.
 ## 3. The growth limit
 
 For |τ| >= 2, both sizes zero and one have an avoider. Supermultiplicativity
-gives c_n >= 1 for every n. With the explicitly supplied Marcus–Tardos bound
-c_n <= K^n, the existing Fekete/logarithm/exponential backend proves a positive
+gives c_n >= 1 for every n. The formalized Marcus–Tardos–Klazar chain supplies
+c_n <= K^n, and the Fekete/logarithm/exponential backend proves a positive
 finite limit of c_n^(1/n). For |τ| <= 1, all positive-size counts vanish, and
 the limit is zero; no logarithm is used.
 
-The endpoint `stanleyWilf_symbolic τ hMT` therefore depends on the symbolic
-first-component recurrence and the explicit bound `hMT`, not the earlier
-`avoidanceProduct` proof.
+The relative endpoint `stanleyWilf_symbolic_of_marcusTardos τ hMT` exposes the
+bound as an input for modular auditing. The public endpoint
+`stanleyWilf_symbolic τ` supplies it internally and depends on the symbolic
+first-component recurrence, not the earlier `avoidanceProduct` proof.
 
 ## 4. Essential limitations and side conditions
 
@@ -85,5 +86,5 @@ first-component recurrence and the explicit bound `hMT`, not the earlier
   1,0,1,0,... . Positivity is separately established for nontrivial avoiders.
 - The formal identity does not assert a positive radius of convergence, a
   simple pole, an asymptotic equivalent, or I(ρ)=1.
-- The route is now checked by Lean elaboration, compilation, and the
-  transitive axiom audit; the Marcus–Tardos bound remains an explicit input.
+- The route is checked by Lean elaboration, a full root build, and the
+  transitive axiom audit; the public theorem has no mathematical hypotheses.

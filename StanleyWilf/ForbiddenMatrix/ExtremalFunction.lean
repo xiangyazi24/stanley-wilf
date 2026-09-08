@@ -41,9 +41,10 @@ def row_density {n : ℕ} (M : Fin n → Fin n → Prop) (i : Fin n) : ℕ := #{
 open scoped Classical in noncomputable
 def col_density {n : ℕ} (M : Fin n → Fin n → Prop) (j : Fin n) : ℕ := #{i | M i j}
 
-open scoped Classical in noncomputable
+open scoped Classical in
 /-- The maximum density of an `n × n` matrix that avoids the ordered pattern `P`. -/
-def ex (P : α → β → Prop) (n : ℕ) : ℕ := sup {M : Fin n → Fin n → Prop | ¬ Contains P M} density
+noncomputable def ex (P : α → β → Prop) (n : ℕ) : ℕ :=
+  sup {M : Fin n → Fin n → Prop | ¬ Contains P M} density
 
 @[simp] lemma ex_zero (P : α → β → Prop) : ex P 0 = 0 := by simp [ex, density]
 
