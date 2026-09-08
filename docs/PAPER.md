@@ -55,7 +55,7 @@ that recurrence, rather than importing it from the binary constructor.
 See `SYMBOLIC_ROUTE.md` for that algebraic step.
 
 The final size-wise SEQ equivalence is obtained by finite-cardinality transport;
-a deterministic whole-factor-list map is not claimed. None of the newly
-written source has been compiled in this authoring environment. The formal
-exponential bound also remains a quantified input until a Marcus–Tardos proof
-is imported or implemented. See `STATUS.md` for the verification ledger.
+a deterministic whole-factor-list map is not claimed. The Lean source for this
+route now compiles and passes the project axiom audit. The formal exponential
+bound also remains a quantified input until a Marcus–Tardos proof is imported
+or implemented. See `STATUS.md` for the verification ledger.

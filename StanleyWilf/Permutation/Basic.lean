@@ -30,7 +30,7 @@ def Avoids (τ : Perm k) (σ : Perm n) : Prop := ¬ Contains τ σ
 
 /-- Every permutation contains itself. -/
 def Occurrence.refl (τ : Perm k) : Occurrence τ τ where
-  position := OrderEmbedding.refl _
+  position := OrderEmbedding.ofStrictMono id (fun _ _ h => h)
   pattern _ _ := Iff.rfl
 
 /-- Compose selections of positions; relative order is preserved transitively. -/

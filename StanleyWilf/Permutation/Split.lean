@@ -19,9 +19,16 @@ def prefixMap (σ : Perm n) (h : SumBoundary σ c) (i : Fin c) : Fin c :=
 theorem prefixMap_injective (σ : Perm n) (h : SumBoundary σ c) :
     Function.Injective (prefixMap σ h) := by
   intro i j hij
+  have hval : (σ (Fin.castLE h.1 i)).val =
+      (σ (Fin.castLE h.1 j)).val := by
+    change (prefixMap σ h i).val = (prefixMap σ h j).val
+    exact congrArg Fin.val hij
   have he : σ (Fin.castLE h.1 i) = σ (Fin.castLE h.1 j) :=
-    Fin.ext (congrArg Fin.val hij)
-  exact Fin.ext (congrArg Fin.val (σ.injective he))
+    Fin.ext hval
+  apply Fin.ext
+  have hval' : (Fin.castLE h.1 i).val = (Fin.castLE h.1 j).val :=
+    congrArg Fin.val (σ.injective he)
+  simpa using hval'
 
 noncomputable def prefixPerm (σ : Perm n) (h : SumBoundary σ c) : Perm c :=
   Equiv.ofBijective (prefixMap σ h)

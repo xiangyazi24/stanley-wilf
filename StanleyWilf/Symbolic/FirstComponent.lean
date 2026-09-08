@@ -28,6 +28,8 @@ namespace FirstComponentSpecification
 
 variable {C I : CombClass} (S : FirstComponentSpecification C I)
 
+include S
+
 /-- The exact convolution obtained from the actual object-level bijection. -/
 theorem counts_succ (n : ℕ) :
     C.counts (n + 1) =

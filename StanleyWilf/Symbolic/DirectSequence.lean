@@ -32,7 +32,7 @@ theorem sumAtomClass_zero (τ : Perm k) : (sumAtomClass τ).counts 0 = 0 := by
 theorem avoidanceClass_zero (τ : Perm k) (hk : 0 < k) :
     (avoidanceClass τ).counts 0 = 1 := by
   classical
-  letI : Unique (Avoider τ 0) :=
+  letI : Unique ((avoidanceClass τ).Obj 0) :=
     { default := ⟨Equiv.refl _, avoids_of_size_lt τ (Equiv.refl _) hk⟩
       uniq := fun _ => Subtype.ext (Subsingleton.elim _ _) }
   exact Fintype.card_unique
@@ -66,15 +66,18 @@ theorem directFirstJoin_injective (τ : Perm k) (hτ : SumIndecomposable τ) (n 
   rintro ⟨i, a, b⟩ ⟨j, a', b'⟩ he
   have hv := congrArg Subtype.val he
   change joinFirst n i a.val b.val = joinFirst n j a'.val b'.val at hv
-  have hs := congrArg (fun σ : Perm (n + 1) =>
-    firstSumBoundary σ (Nat.succ_pos n)) hv
+  have hs : firstSumBoundary (joinFirst n i a.val b.val) (Nat.succ_pos n) =
+      firstSumBoundary (joinFirst n j a'.val b'.val) (Nat.succ_pos n) :=
+    congrArg (fun σ : Perm (n + 1) => firstSumBoundary σ (Nat.succ_pos n)) hv
   rw [firstSumBoundary_joinFirst n i a.val b.val a.property.2.2,
       firstSumBoundary_joinFirst n j a'.val b'.val a'.property.2.2] at hs
   have hij : i = j := Fin.ext (by omega)
   subst j
   have hp : directSum a.val b.val = directSum a'.val b'.val :=
     castPerm_injective _ hv
-  have hp' := directSum_injective (i.val + 1) (n - i.val) hp
+  have hp' : (a.val, b.val) = (a'.val, b'.val) := by
+    apply directSum_injective (i.val + 1) (n - i.val)
+    exact hp
   have ha : a = a' := Subtype.ext (congrArg Prod.fst hp')
   have hb : b = b' := Subtype.ext (congrArg Prod.snd hp')
   subst a'

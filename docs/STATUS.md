@@ -2,22 +2,23 @@
 
 ## Machine-verification status
 
-- Lean compiler available during authoring: **no**.
-- New Lean files compiled: **no**.
-- New declarations checked by the Lean kernel: **no**.
-- `#print axioms` executed: **no**.
+- Lean compiler available during authoring: **yes**, Lean `v4.29.0` on uisai2.
+- New Lean files compiled: **yes**, remote `lake build` completed 8272/8272.
+- New declarations checked by the Lean kernel: **yes**.
+- `#print axioms` executed: **yes**, 38 declarations audited.
 - GitHub remote created/pushed: **no**.
 
-Do not interpret the lack of textual proof placeholders as a successful build.
-The finite Python regression tests check independent executable models, not the
-Lean parser, elaborator, or kernel.
+The absence of textual proof placeholders is not itself a build result. The
+current build and axiom-audit evidence is recorded below; the finite Python
+regression tests check independent executable models in addition to Lean.
 
 ## Stages
 
-The initial source and exact remaining milestones are recorded as files are
-added. No top-level claim of a completed Stanley–Wilf formalization is made.
+The source-level Stanley–Wilf formalization is now kernel-checked relative to
+the explicit `MarcusTardosBound` input. No proof of Marcus–Tardos itself is
+included in this repository.
 
-### Source written (compilation still pending)
+### Source written and compiled
 
 - `Permutation/Basic.lean`: occurrences, containment reflexivity/transitivity,
   size monotonicity, hereditary avoidance, the concrete `avoidanceClass`.
@@ -29,7 +30,7 @@ added. No top-level claim of a completed Stanley–Wilf formalization is made.
 - `Symbolic/Specification.lean`: an explicit size-wise `C ≃ SEQ(I)` interface,
   transported to the existing library's formal identity `C(z)(1-I(z))=1`.
 
-### Second-pass combinatorial source (compilation still pending)
+### Second-pass combinatorial source (compiled)
 
 - `Permutation/BlockSum.lean`: numeric formulas, relative order within blocks,
   and strict separation across blocks, for both actual operations.
@@ -44,7 +45,7 @@ added. No top-level claim of a completed Stanley–Wilf formalization is made.
 - `Permutation/SmallPatterns.lean`: actual empty/singleton occurrences and
   zero avoider counts at positive indices for pattern length at most one.
 
-### Third-pass symbolic source (compilation still pending)
+### Third-pass symbolic source (compiled)
 
 - `Permutation/Boundary.lean`: invariant prefixes, their equivalence to genuine
   sum cuts, the first positive boundary, and uniqueness of that boundary.
@@ -79,7 +80,7 @@ chosen cardinality equivalence is claimed. Building a deterministic full
 factor-list equivalence is an optional strengthening, not an extra hypothesis
 of the source-level OGF or growth theorems.
 
-### Analytic source written (compilation still pending)
+### Analytic source written and compiled
 
 - `Counting.lean`: an explicit `GradedProduct` interface, the cardinality
   inequality, positivity from sizes zero/one, repeated-block and remainder
@@ -93,16 +94,31 @@ of the source-level OGF or growth theorems.
   `growthTarget_of_product` with both substantive inputs explicit. The new
   `stanleyWilf_of_marcusTardos` supplies the product and handles lengths 0/1;
   its **only mathematical hypothesis** is `MarcusTardosBound τ`.
-- `Audit.lean`: kernel-axiom queries, to be executed only after a successful
-  build. No printed axiom results are claimed at this point.
+- `Audit.lean`: kernel-axiom queries, executed after the successful remote
+  build; all reported axioms are in the permitted transitive set.
 
 ### Remaining analytic/final obligations
 
-3. Compile and repair all source before calling any declaration verified.
-4. Supply a formal Marcus–Tardos proof or keep its bound explicitly quantified
-   in the final relative theorem. A new custom axiom is not an acceptable substitute.
-5. Optionally add the supremum characterization and Cauchy–Hadamard radius
-   identification. No simple-pole/asymptotic-equivalent claim is made.
+3. Supply a formal Marcus–Tardos proof or keep its bound explicitly quantified
+  in the final relative theorem. A new custom axiom is not an acceptable substitute.
+4. Optionally add the supremum characterization and Cauchy–Hadamard radius
+  identification. No simple-pole/asymptotic-equivalent claim is made.
+
+## Checks actually executed on the fourth pass
+
+- Remote `lake build` on uisai2 with Lean `v4.29.0`: **PASS**, 8272/8272
+  targets built.
+- `lake env lean tests/Smoke.lean`: **PASS**.
+- `Audit.lean` followed by `scripts/check_axioms.py`: **PASS**, 38 declarations;
+  only `propext`, `Classical.choice`, and `Quot.sound` occur.
+- Source hygiene: **PASS** (183 named declarations across 22 Lean files).
+- Python verification harness and all three exact-model suites: **PASS**.
+- The Marcus–Tardos exponential bound remains `MarcusTardosBound τ`, an
+  explicit theorem input rather than a project axiom.
+
+The third-, second-, and initial-pass sections below are historical records;
+their earlier statements about missing compiler access are not the current
+verification status.
 
 ## Checks actually executed on the third pass
 

@@ -82,6 +82,7 @@ theorem skewSum_injective (m n : ℕ) :
 @[simp] theorem skewSum_castAdd_val (σ : Perm m) (π : Perm n) (i : Fin m) :
     (skewSum σ π (Fin.castAdd n i)).val = n + (σ i).val := by
   simp [skewSum, blockJoin, skewValues, finCongr]
+  omega
 
 @[simp] theorem skewSum_natAdd_val (σ : Perm m) (π : Perm n) (j : Fin n) :
     (skewSum σ π (Fin.natAdd m j)).val = (π j).val := by

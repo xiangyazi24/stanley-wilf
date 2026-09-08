@@ -21,7 +21,9 @@ noncomputable def directAvoidanceProduct (τ : Perm k) (hτ : SumIndecomposable 
     intro p q h
     have hv : directSum p.1.val p.2.val = directSum q.1.val q.2.val :=
       congrArg Subtype.val h
-    have hpq := directSum_injective m n hv
+    have hpq : (p.1.val, p.2.val) = (q.1.val, q.2.val) := by
+      apply directSum_injective m n
+      exact hv
     apply Prod.ext
     · exact Subtype.ext (congrArg Prod.fst hpq)
     · exact Subtype.ext (congrArg Prod.snd hpq)
@@ -34,7 +36,9 @@ noncomputable def skewAvoidanceProduct (τ : Perm k) (hτ : SkewIndecomposable �
     intro p q h
     have hv : skewSum p.1.val p.2.val = skewSum q.1.val q.2.val :=
       congrArg Subtype.val h
-    have hpq := skewSum_injective m n hv
+    have hpq : (p.1.val, p.2.val) = (q.1.val, q.2.val) := by
+      apply skewSum_injective m n
+      exact hv
     apply Prod.ext
     · exact Subtype.ext (congrArg Prod.fst hpq)
     · exact Subtype.ext (congrArg Prod.snd hpq)

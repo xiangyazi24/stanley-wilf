@@ -59,7 +59,7 @@ example {n c : ℕ} (σ : Perm n) (h : IsFirstSumBoundary σ c) :
 
 example : (complement (Equiv.refl (Fin 3)) (0 : Fin 3)).val = 2 := by decide
 
-example {k : ℕ} (τ : Perm k) (hk : 0 < k) :
+noncomputable example {k : ℕ} (τ : Perm k) (hk : 0 < k) :
     SequenceSpecification (avoidanceClass τ) (indecomposableAtomClass τ) :=
   avoidanceSequenceSpecification τ hk
 
@@ -68,7 +68,7 @@ example {k : ℕ} (τ : Perm k) (hk : 0 < k) :
   avoidance_ogf_mul_one_sub τ hk
 
 -- The singleton pattern's class is epsilon, not a positive-size logarithm case.
-example (τ : Perm 1) :
+noncomputable example (τ : Perm 1) :
     SequenceSpecification (avoidanceClass τ) (indecomposableAtomClass τ) :=
   avoidanceSequenceSpecification τ (by decide)
 

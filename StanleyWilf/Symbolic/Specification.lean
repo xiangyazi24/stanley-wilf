@@ -21,6 +21,8 @@ namespace SequenceSpecification
 
 variable {C I : CombClass} (S : SequenceSpecification C I)
 
+include S
+
 theorem counts_eq (n : ℕ) : C.counts n = I.seq.counts n :=
   Fintype.card_congr (S.decompose n)
 

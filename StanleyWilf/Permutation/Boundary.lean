@@ -107,12 +107,22 @@ theorem IsSumCut.to_boundary {σ : Perm n} (h : IsSumCut σ c) : SumBoundary σ 
   let f : Fin c → Fin c := fun v => ⟨(σ.symm (Fin.castLE hc v)).val, hpre v⟩
   have hf : Function.Injective f := by
     intro v w hvw
+    have hval : (σ.symm (Fin.castLE hc v)).val =
+        (σ.symm (Fin.castLE hc w)).val := by
+      change (f v).val = (f w).val
+      exact congrArg Fin.val hvw
     have he : σ.symm (Fin.castLE hc v) = σ.symm (Fin.castLE hc w) :=
-      Fin.ext (congrArg Fin.val hvw)
+      Fin.ext hval
     have hvw' := σ.symm.injective he
-    exact Fin.ext (congrArg Fin.val hvw')
+    apply Fin.ext
+    have hval' : (Fin.castLE hc v).val = (Fin.castLE hc w).val :=
+      congrArg Fin.val hvw'
+    simpa using hval'
   obtain ⟨v, hv⟩ := Finite.surjective_of_injective hf ⟨i.val, hi⟩
-  have he : σ.symm (Fin.castLE hc v) = i := Fin.ext (congrArg Fin.val hv)
+  have hval : (σ.symm (Fin.castLE hc v)).val = i.val := by
+    change (f v).val = i.val
+    exact congrArg Fin.val hv
+  have he : σ.symm (Fin.castLE hc v) = i := Fin.ext hval
   have he' : Fin.castLE hc v = σ i := by
     simpa only [Equiv.apply_symm_apply] using congrArg σ he
   have hgood : (σ i).val < c := by rw [← he']; exact v.isLt

@@ -63,7 +63,7 @@ theorem positions_split {N : ℕ} (f : Fin k ↪o Fin N) (b : ℕ) :
   · exact Or.inr (Or.inl hright)
   have hex : ∃ t : ℕ, ∃ ht : t < k, b ≤ (f ⟨t, ht⟩).val := by
     obtain ⟨i, hi⟩ := not_forall.mp hleft
-    exact ⟨i.val, i.isLt, by omega⟩
+    exact ⟨i.val, i.isLt, by simpa using (not_lt.mp hi)⟩
   obtain ⟨hck, hcright⟩ := Nat.find_spec hex
   have hcut : ∀ i : Fin k, (f i).val < b ↔ i.val < Nat.find hex := by
     intro i
@@ -77,10 +77,11 @@ theorem positions_split {N : ℕ} (f : Fin k ↪o Fin N) (b : ℕ) :
       omega
     · intro hi
       by_contra hnot
-      exact Nat.find_min hex hi ⟨i.isLt, by omega⟩
+      have hfi : b ≤ (f i).val := not_lt.mp hnot
+      exact Nat.find_min hex hi ⟨i.isLt, by simpa using hfi⟩
   have hc0 : 0 < Nat.find hex := by
     obtain ⟨i, hi⟩ := not_forall.mp hright
-    have hil : (f i).val < b := by omega
+    have hil : (f i).val < b := not_le.mp hi
     have hic := (hcut i).mp hil
     omega
   exact Or.inr (Or.inr ⟨Nat.find hex, hc0, hck, hcut⟩)

@@ -1,7 +1,8 @@
 # The first-component symbolic route
 
-This is an exposition of established mathematics and a source-level proof map,
-not a new proof of Marcus–Tardos and not a claim that the Lean files compiled.
+This is an exposition of established mathematics and a proof map. The Lean
+source for the route compiles, but this project does not claim a new proof of
+Marcus–Tardos.
 
 ## 1. Canonical first component
 
@@ -84,5 +85,5 @@ first-component recurrence and the explicit bound `hMT`, not the earlier
   1,0,1,0,... . Positivity is separately established for nontrivial avoiders.
 - The formal identity does not assert a positive radius of convergence, a
   simple pole, an asymptotic equivalent, or I(ρ)=1.
-- Source without placeholders is still unverified until Lean elaboration,
-  compilation, and the transitive axiom audit actually succeed.
+- The route is now checked by Lean elaboration, compilation, and the
+  transitive axiom audit; the Marcus–Tardos bound remains an explicit input.

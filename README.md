@@ -12,8 +12,8 @@ actual invariant prefix and unique positive first boundary
   -> a finite limit of c(n)^(1/n).
 ```
 
-**Status: two concrete relative growth-limit routes are written, neither has
-been compiled in this authoring environment.** The new endpoint is
+**Status: two concrete relative growth-limit routes are written and compile
+under the pinned Lean toolchain.** The new endpoint is
 `stanleyWilf_symbolic`. Its only mathematical hypothesis is
 `MarcusTardosBound τ`; it gets supermultiplicativity from the actual symbolic
 first-component recurrence, not from the earlier binary `GradedProduct` proof.
@@ -28,10 +28,9 @@ finite-cardinality transport from the proved recurrence: it is **not claimed
 to compute the full canonical list of components**.
 
 No decomposition, closure, or constructor hypothesis is left at these new
-symbolic endpoints. This describes the proof **source**, not a completed
-kernel-checked formalization. There is no Lean executable in the container;
-network/toolchain retrieval failed. Source hygiene and independent exact Python
-tests are not a substitute for elaboration, compilation, or a kernel audit.
+symbolic endpoints. The source passes the remote Lean build and the transitive
+`#print axioms` audit; independent exact Python tests remain additional
+regression evidence, not a substitute for the kernel check.
 See [the precise status](docs/STATUS.md) and [the symbolic proof](docs/SYMBOLIC_ROUTE.md).
 
 The mathematical paper proof is complete **using the already-proved
